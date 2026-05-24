@@ -3,6 +3,7 @@
   "name": "CalendarKit",
   "version": "1.0.0",
   "description": "Instant access to Google Calendar and essential utilities — all in one place, right from your toolbar.",
+  "default_locale": "en",
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {

@@ -47,9 +47,10 @@ function switchToCalculator() {
   setLogoSVG(calculatorSVG);
 }
 
-// Default tab load karo
 chrome.storage.local.get(['defaultTab'], (result) => {
   const def = result.defaultTab || 'calendar';
+  const radio = document.querySelector(`input[name="defaultTab"][value="${def}"]`);
+  if (radio) radio.checked = true;
   if (def === 'calculator') {
     switchToCalculator();
   } else {
@@ -60,26 +61,25 @@ chrome.storage.local.get(['defaultTab'], (result) => {
 tabCalendar.addEventListener('click', switchToCalendar);
 tabCalculator.addEventListener('click', switchToCalculator);
 
-// Settings panel toggle
 document.getElementById('settingsBtn').addEventListener('click', () => {
   const panel = document.getElementById('settingsPanel');
   panel.style.display = panel.style.display === 'none' ? 'flex' : 'none';
 });
 
-// Default tab radio save
 document.querySelectorAll('input[name="defaultTab"]').forEach(radio => {
   radio.addEventListener('change', (e) => {
     chrome.storage.local.set({ defaultTab: e.target.value });
   });
 });
 
-// Current default radio select karo
-chrome.storage.local.get(['defaultTab'], (result) => {
-  const def = result.defaultTab || 'calendar';
-  document.querySelector(`input[name="defaultTab"][value="${def}"]`).checked = true;
+document.addEventListener('click', (e) => {
+  const panel = document.getElementById('settingsPanel');
+  const settingsBtn = document.getElementById('settingsBtn');
+  if (!panel.contains(e.target) && e.target !== settingsBtn && !settingsBtn.contains(e.target)) {
+    panel.style.display = 'none';
+  }
 });
 
-// Extension icon update
 function updateExtensionIcon() {
   const date = new Date().getDate();
   const canvas = document.createElement('canvas');
@@ -106,11 +106,3 @@ function updateExtensionIcon() {
 }
 
 updateExtensionIcon();
-
-document.addEventListener('click', (e) => {
-  const panel = document.getElementById('settingsPanel');
-  const settingsBtn = document.getElementById('settingsBtn');
-  if (!panel.contains(e.target) && e.target !== settingsBtn && !settingsBtn.contains(e.target)) {
-    panel.style.display = 'none';
-  }
-});

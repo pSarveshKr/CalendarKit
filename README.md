@@ -91,7 +91,6 @@ Your schedule lives in your toolbar now.
 - Dark theme — easy on the eyes
 - Clean, minimal interface — no clutter
 - Smooth animations
-- Dynamic toolbar icon showing today's date
 
 ### 🔒 Privacy First
 - Zero data collection
@@ -127,7 +126,7 @@ Your schedule lives in your toolbar now.
 
 1. Clone this repository
 ```bash
-   git clone https://github.com/yourusername/CalendarKit.git
+   git clone https://github.com/pSarveshKr/CalendarKit.git
 ```
 2. Open Chrome and go to `chrome://extensions`
 3. Enable **Developer mode** (top right toggle)
@@ -181,8 +180,8 @@ Have an idea for a utility that would make your daily workflow easier?
 **We'd love to hear from you.**
 
 - 📧 **Email:** cyphonplay@gmail.com
-- 🐛 **Bug reports:** [Open an issue](https://github.com/yourusername/CalendarKit/issues)
-- 💡 **Feature requests:** [Start a discussion](https://github.com/yourusername/CalendarKit/discussions)
+- 🐛 **Bug reports:** [Open an issue](https://github.com/pSarveshKr/CalendarKit/issues)
+- 💡 **Feature requests:** [Start a discussion](https://github.com/pSarveshKr/CalendarKit/discussions)
 - 🔧 **Want to contribute?** Fork the repo and open a Pull Request — all contributions welcome
 
 If there's a tool or utility missing from your daily life that fits the CalendarKit philosophy — **staying in your current screen** — drop us a message. We build what users actually need.
@@ -200,7 +199,7 @@ CalendarKit collects absolutely no data.
 - Your preferences never leave your browser
 - No analytics, no tracking, no servers
 
-[Read full Privacy Policy](./privacy-policy.html)
+[Read full Privacy Policy](https://psarveshkr.github.io/CalendarKit/)
 
 ---
 
