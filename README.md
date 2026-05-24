@@ -161,18 +161,6 @@ Your schedule lives in your toolbar now.
 
 ---
 
-## Roadmap
-
-CalendarKit is built to grow. Planned utilities:
-
-- [ ] World Clock — multiple timezones at a glance
-- [ ] Quick Notes — jot something fast without leaving your tab
-- [ ] Unit Converter — length, weight, temperature, currency
-- [ ] Pomodoro Timer — focused work sessions built in
-- [ ] Countdown — days until an important date
-
----
-
 ## Contributing
 
 Have an idea for a utility that would make your daily workflow easier?
@@ -181,7 +169,7 @@ Have an idea for a utility that would make your daily workflow easier?
 
 - 📧 **Email:** cyphonplay@gmail.com
 - 🐛 **Bug reports:** [Open an issue](https://github.com/pSarveshKr/CalendarKit/issues)
-- 💡 **Feature requests:** [Start a discussion](https://github.com/pSarveshKr/CalendarKit/discussions)
+- 💡 **Feature requests:** [Drop an Email](cyphonplay@gmail.com)
 - 🔧 **Want to contribute?** Fork the repo and open a Pull Request — all contributions welcome
 
 If there's a tool or utility missing from your daily life that fits the CalendarKit philosophy — **staying in your current screen** — drop us a message. We build what users actually need.
