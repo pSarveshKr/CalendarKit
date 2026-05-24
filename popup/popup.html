@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <title>Google Calendar</title>
+  <link rel="stylesheet" href="popup.css"/>
+  <link rel="stylesheet" href="calendar/calendar.css"/>
+  <link rel="stylesheet" href="calculator/calculator.css"/>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <div class="logo">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+          <rect x="3" y="4" width="18" height="18" rx="2" stroke="#4285F4" stroke-width="2"/>
+          <path d="M3 9h18" stroke="#4285F4" stroke-width="2"/>
+          <path d="M8 4V2M16 4V2" stroke="#4285F4" stroke-width="2" stroke-linecap="round"/>
+          <rect x="7" y="13" width="3" height="3" rx="0.5" fill="#4285F4"/>
+          <rect x="14" y="13" width="3" height="3" rx="0.5" fill="#EA4335"/>
+          <rect x="7" y="17" width="3" height="3" rx="0.5" fill="#34A853"/>
+          <rect x="14" y="17" width="3" height="3" rx="0.5" fill="#FBBC05"/>
+        </svg>
+        <span class="title" style="min-width:90px;">Calendar</span>
+      </div>
+      <div class="tabs">
+        <button class="tab active" id="tabCalendar">Calendar</button>
+        <button class="tab" id="tabCalculator">Calculator</button>
+      </div>
+      <div class="actions">
+        <button id="refreshBtn" class="btn-icon" title="Refresh">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="23 4 23 10 17 10"/>
+            <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>
+          </svg>
+        </button>
+        <button id="changeCalBtn" class="btn-icon" title="Change Calendar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/>
+            <path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>
+          </svg>
+        </button>
+        <button id="openFull" class="btn-icon" title="Open Google Calendar">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+            <polyline points="15 3 21 3 21 9"/>
+            <line x1="10" y1="14" x2="21" y2="3"/>
+          </svg>
+        </button>
+        <button id="settingsBtn" class="btn-icon" title="Settings">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
+      </div>
+    </header>
+
+    <!-- Settings Panel -->
+    <div id="settingsPanel" style="display:none; position:absolute; top:52px; right:12px; background:#161922; border:1px solid #1f2433; border-radius:10px; padding:16px; z-index:100; flex-direction:column; gap:12px; min-width:200px;">
+      <div style="font-size:12px; font-weight:600; color:#9ca3af; margin-bottom:4px;">Default Tab on Open</div>
+      <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:#e8eaf0;">
+        <input type="radio" name="defaultTab" value="calendar" style="accent-color:#4285F4;"/> Calendar
+      </label>
+      <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:#e8eaf0;">
+        <input type="radio" name="defaultTab" value="calculator" style="accent-color:#4285F4;"/> Calculator
+      </label>
+    </div>
+
+    <!-- Calendar Tab -->
+    <div id="calendarTab" class="tab-content">
+      <div class="setup-screen" id="setupScreen" style="display:none;">
+        <div class="setup-box">
+          <div class="setup-icon">📅</div>
+          <h2>Paste your Calendar Embed URL</h2>
+          <ol>
+            <li>Open <a href="#" id="openGCal">Google Calendar</a></li>
+            <li>Go to <strong>Settings</strong> → your calendar → <strong>Integrate calendar</strong></li>
+            <li>Copy the <strong>Embed URL</strong> and paste below</li>
+          </ol>
+          <input type="text" id="embedInput" placeholder="https://calendar.google.com/calendar/embed?src=..."/>
+          <button id="saveEmbed">Load Calendar</button>
+          <p class="setup-err" id="setupErr"></p>
+        </div>
+      </div>
+      <div class="calendar-wrap" id="calendarWrap" style="display:flex;">
+        <div class="loading-state" id="loadingState" style="display:flex;">
+          <div class="spinner"></div>
+          <p>Loading your Google Calendar…</p>
+        </div>
+        <iframe id="calendarFrame" frameborder="0" scrolling="yes" title="Google Calendar"></iframe>
+      </div>
+    </div>
+
+    <!-- Calculator Tab -->
+    <div id="calculatorTab" class="tab-content" style="display:none">
+      <div class="calc-container">
+        <div class="calc-main">
+          <div class="calc-display">
+            <div class="calc-expression" id="calcExpression"></div>
+            <div class="calc-result" id="calcResult">0</div>
+          </div>
+          <div class="calc-buttons">
+            <button class="calc-btn span-two" data-action="clear">AC</button>
+            <button class="calc-btn" data-action="backspace">⌫</button>
+            <button class="calc-btn operator" data-value="/">÷</button>
+            <button class="calc-btn" data-value="7">7</button>
+            <button class="calc-btn" data-value="8">8</button>
+            <button class="calc-btn" data-value="9">9</button>
+            <button class="calc-btn operator" data-value="*">×</button>
+            <button class="calc-btn" data-value="4">4</button>
+            <button class="calc-btn" data-value="5">5</button>
+            <button class="calc-btn" data-value="6">6</button>
+            <button class="calc-btn operator" data-value="-">−</button>
+            <button class="calc-btn" data-value="1">1</button>
+            <button class="calc-btn" data-value="2">2</button>
+            <button class="calc-btn" data-value="3">3</button>
+            <button class="calc-btn operator" data-value="+">+</button>
+            <button class="calc-btn" data-value="0">0</button>
+            <button class="calc-btn" data-value=".">.</button>
+            <button class="calc-btn" data-value="(">(</button>
+            <button class="calc-btn" data-value=")">)</button>
+            <button class="calc-btn equals span-four" data-action="equals">=</button>
+          </div>
+        </div>
+        <!-- History Toggle Bar -->
+        <div class="history-toggle" id="historyToggle" title="Toggle History">
+          <svg class="toggle-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="3" y1="6" x2="21" y2="6"/>
+            <line x1="3" y1="12" x2="21" y2="12"/>
+            <line x1="3" y1="18" x2="21" y2="18"/>
+          </svg>
+          <span class="history-label">History</span>
+        </div>
+        <!-- History Sidebar -->
+        <div class="history-sidebar" id="historySidebar">
+          <div class="history-header">
+            <span>History</span>
+            <button class="history-clear-btn" id="historyClear">Clear</button>
+          </div>
+          <div class="history-list" id="calcHistory"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="calendar/calendar.js"></script>
+  <script src="calculator/calculator.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
