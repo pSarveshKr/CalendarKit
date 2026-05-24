@@ -106,7 +106,7 @@ Your schedule lives in your toolbar now.
 |---|---|---|
 | ![Calendar](./assets/screenshot-calendar.png) | ![Calculator](./assets/screenshot-calculator.png) | ![Settings](./assets/screenshot-settings.png) |
 
-> 📸 *Screenshots coming soon — feel free to contribute!*
+
 
 ---
 
