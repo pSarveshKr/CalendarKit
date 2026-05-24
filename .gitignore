@@ -1,0 +1,18 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# zip files
+*.zip
+*.crx
+
+# assets
+assets/banner1.png
+assets/banner2.png
