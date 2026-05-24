@@ -111,7 +111,7 @@ Your schedule lives in your toolbar now.
 
 ## Demo
 
-[![Watch Demo](./assets/banner.png)](https://your-demo-video-link.com)
+[![Watch Demo](./assets/banner.png)](https://youtu.be/kPF7J1i4kw4)
 
 > 🎥 *Video walkthrough coming soon*
 
