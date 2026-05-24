@@ -112,7 +112,7 @@ Your schedule lives in your toolbar now.
 
 ## Demo
 
-[![Watch Demo](./assets/video-thumbnail.png)](https://your-demo-video-link.com)
+[![Watch Demo](./assets/banner.png)](https://your-demo-video-link.com)
 
 > 🎥 *Video walkthrough coming soon*
 
