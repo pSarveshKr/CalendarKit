@@ -194,3 +194,13 @@ CalendarKit collects absolutely no data.
 ## License
 
 MIT License — free to use, modify, and distribute.
+
+---
+
+## Support
+
+If CalendarKit made your workflow easier, consider buying me a coffee ☕
+
+[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/psarveshkr)
+
+---

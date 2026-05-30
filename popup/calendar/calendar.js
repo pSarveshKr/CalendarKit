@@ -64,6 +64,11 @@ openGCal.addEventListener('click', (e) => {
   chrome.tabs.create({ url: 'https://calendar.google.com/calendar/r/settings' });
 });
 
+document.querySelector('.kofi-link').addEventListener('click', (e) => {
+  e.preventDefault();
+  chrome.tabs.create({ url: 'https://ko-fi.com/psarveshkr' });
+});
+
 document.getElementById('changeCalBtn').addEventListener('click', () => {
   chrome.storage.local.remove('calEmbedUrl');
   savedUrl = null;
