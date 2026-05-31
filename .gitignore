@@ -12,6 +12,7 @@ Thumbs.db
 # zip files
 *.zip
 *.crx
+versions
 
 # assets
 assets/banner1.png
