@@ -120,7 +120,7 @@ Your schedule lives in your toolbar now.
 ## Installation
 
 ### From Chrome Web Store
-*(Coming soon — link will be added here)*
+[Install CalendarKit](https://chromewebstore.google.com/detail/nhcbepdcigkmidijjchdfnngloaemfcn)
 
 ### Manual Install (Developer Mode)
 
