@@ -1,6 +1,6 @@
 # CalendarKit 🗓️
 
-> Your Mac's missing taskbar — instant Calendar, Calculator, and more. Right where you work.
+> Your Mac's missing taskbar — instant Calendar, Calculator, and **Text Grabber (OCR)**. Right where you work.
 
 ![CalendarKit Banner](./assets/banner.png)
 
@@ -24,7 +24,7 @@ Want to check what day December 15th falls on? You have to:
 
 Every. Single. Time.
 
-And calculators? Same story. You're in the middle of a spreadsheet, a document, a browser tab — and you need to do a quick calculation. On Windows, it's a keyboard shortcut away, right on your current screen. On Mac, you're opening a separate app, switching contexts, losing your flow.
+And calculators or copying text from images/unselectable text on screen? Same story. You're in the middle of a spreadsheet, a document, a video, or an image — and you need to copy text or do a quick calculation. On Mac, you're opening separate apps or tools, switching contexts, losing your flow.
 
 **This constant context switching kills productivity.** And it's completely unnecessary.
 
@@ -38,31 +38,9 @@ Click the icon in your toolbar. Your full Google Calendar appears, right there, 
 
 Need to calculate something? Switch to the built-in Calculator tab — without opening a single new window.
 
+Need to copy text from an image, diagram, PDF, or uncopyable webpage? Switch to the **Text Grabber** tab, click **Select Screen Area**, drag a box over any screen area, and instantly get the extracted text in your editor with a 1-click Copy button!
+
 **Everything you need. Right where you are.**
-
----
-
-## Your Google Calendar. Always Within Reach.
-
-CalendarKit doesn't just show you a calendar — it connects directly to **your** Google Calendar.
-
-Every event you've created. Every meeting you've scheduled. Every birthday, anniversary, deadline, and reminder — all visible in one click, without leaving your current tab.
-
-> Imagine you're deep in a document and you wonder — *"Do I have anything important next Friday?"*
-> With CalendarKit, you find out in 2 seconds. Not 20.
-
-### What you'll never miss again:
-- 📌 **Upcoming meetings** — see what's coming this week at a glance
-- 🎂 **Birthdays & anniversaries** — never forget an important date
-- ⏰ **Deadlines** — know exactly how many days you have left
-- 📍 **Recurring events** — your weekly standups, monthly reviews, all visible
-- 🗓️ **Future planning** — check if December 25th is a Friday before you make plans
-
-### It's your calendar. Now it's also your co-pilot.
-
-No more *"let me open my calendar app"*. No more switching screens. No more losing your train of thought.
-
-Your schedule lives in your toolbar now.
 
 ---
 
@@ -82,38 +60,35 @@ Your schedule lives in your toolbar now.
 - Click any history item to reuse the result
 - Keyboard support — type naturally with numpad or keyboard
 
+### 🔍 Text Grabber (Screen OCR Text Extractor)
+- **Select Any Screen Area**: Click "Select Screen Area" to darken the screen and use a custom crosshair cursor to drag-select any text on screen.
+- **Copy Uncopyable Text**: Easily extract text from images, non-selectable web text, diagrams, videos, PDFs, and canvas elements.
+- **1-Click Copy & Clean Editor**: View extracted text in a clean monospace editor with real-time word and character counters, and copy it to your clipboard with 1 click.
+- **100% Offline & Private**: Runs client-side WASM OCR completely on your machine. Zero network calls, zero data uploads, zero external tracking.
+
 ### ⚙️ Smart Settings
-- Set your **default tab** — Calendar or Calculator
-- CalendarKit remembers your preference
+- Set your **default tab** — Calendar, Calculator, or Text Grabber
+- CalendarKit remembers your preference automatically
 - Change your calendar URL anytime
 
 ### 🎨 Design
 - Dark theme — easy on the eyes
 - Clean, minimal interface — no clutter
-- Smooth animations
+- Glassmorphic UI with smooth micro-animations
 
-### 🔒 Privacy First
-- Zero data collection
-- Everything stored locally on your device
-- No accounts, no sign-ups, no tracking
+### 🔒 Privacy & Security First (Chrome Web Store Compliant)
+- **100% Local Processing**: All calendar views, calculations, and OCR text extractions are executed locally inside your browser.
+- **Zero External Telemetry**: No third-party servers, no analytics, no external script imports.
+- **Manifest V3 Compliant**: Adheres to strict Chrome Extension Content Security Policy (`script-src 'self' 'wasm-unsafe-eval'`).
+- **No Data Collection**: Your schedule, calculations, and grabbed text never leave your computer.
 
 ---
 
 ## Screenshots
 
-| Calendar View | Calculator View | Settings |
-|---|---|---|
-| ![Calendar](./assets/screenshot-calendar.png) | ![Calculator](./assets/screenshot-calculator.png) | ![Settings](./assets/screenshot-settings.png) |
-
-
-
----
-
-## Demo
-
-[![Watch Demo](./assets/banner.png)](https://youtu.be/kPF7J1i4kw4)
-
-> 🎥 Click the image above to watch the full demo.
+| Calendar View | Calculator View | Text Grabber View | Settings |
+|---|---|---|---|
+| ![Calendar](./assets/screenshot-calendar.png) | ![Calculator](./assets/screenshot-calculator.png) | ![Text Grabber](./assets/screenshot-text-grabber.png) | ![Settings](./assets/screenshot-settings.png) |
 
 ---
 
@@ -136,58 +111,27 @@ Your schedule lives in your toolbar now.
 
 ---
 
-## Setup
+## How to Use Text Grabber
 
-### Connect Your Google Calendar
-
-1. Go to [Google Calendar](https://calendar.google.com)
-2. Click the **Settings** gear icon ⚙️
-3. Select your calendar from the left sidebar
-4. Scroll down to **Integrate calendar**
-5. Copy the **Public URL to this calendar** (embed URL)
-6. Click the CalendarKit icon → paste the URL → click **Load Calendar**
-
-> ✅ Your calendar is now connected. It remembers your URL — you only do this once.
+1. Open the CalendarKit extension from your Chrome toolbar.
+2. Click on the **Text Grabber** tab (or set it as your Default Tab in Settings).
+3. Click the **"Select Screen Area"** button.
+4. The extension popup will close, and your screen will dim slightly with a crosshair cursor (`+`).
+5. Click and drag over any area containing text (images, slides, PDFs, code, unselectable webpage text).
+6. Release the mouse button — CalendarKit automatically captures the region, runs OCR, re-opens the extension popup, and displays the extracted text in the editor.
+7. Click **"Copy Text"** to copy the extracted text to your clipboard!
 
 ---
 
-## Who Is This For?
+## Privacy & Security Statement
 
-- 🖥️ **Windows switchers** who miss the taskbar calendar
-- 💼 **Professionals** who live in their browser all day
-- 📊 **Anyone** who hates switching apps for simple tasks
-- 🧑‍💻 **Developers, designers, writers** — anyone in deep focus mode
-- 📅 **Google Calendar users** who want their schedule always one click away
+CalendarKit collects **absolutely no data**.
 
----
-
-## Contributing
-
-Have an idea for a utility that would make your daily workflow easier?
-
-**We'd love to hear from you.**
-
-- 📧 **Email:** cyphonplay@gmail.com
-- 🐛 **Bug reports:** [Open an issue](https://github.com/pSarveshKr/CalendarKit/issues)
-- 💡 **Feature requests:** [Drop an Email](cyphonplay@gmail.com)
-- 🔧 **Want to contribute?** Fork the repo and open a Pull Request — all contributions welcome
-
-If there's a tool or utility missing from your daily life that fits the CalendarKit philosophy — **staying in your current screen** — drop us a message. We build what users actually need.
-
-> 💬 *Have a utility idea? Drop a mail or open a PR — if it keeps you on your current screen and makes life simpler, it belongs in CalendarKit.*
-
----
-
-## Privacy
-
-CalendarKit collects absolutely no data.
-
-- Your calendar URL is stored locally using Chrome's storage API
-- Your calculator history stays on your device
-- Your preferences never leave your browser
-- No analytics, no tracking, no servers
-
-[Read full Privacy Policy](https://psarveshkr.github.io/CalendarKit/)
+- Your calendar URL is stored locally using Chrome's `storage.local` API.
+- Your calculator history stays strictly on your device.
+- All OCR text extractions run 100% client-side using bundled local WebAssembly scripts.
+- No screenshots or extracted text are ever transmitted to any remote server or third party.
+- No analytics, no tracking scripts, no remote code execution.
 
 ---
 
@@ -202,5 +146,3 @@ MIT License — free to use, modify, and distribute.
 If CalendarKit made your workflow easier, consider buying me a coffee ☕
 
 [![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/psarveshkr)
-
----

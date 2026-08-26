@@ -1,0 +1,173 @@
+/* CalendarKit - Text Grabber Styling */
+
+.tg-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px 20px;
+  background: #0f1117;
+  gap: 14px;
+  box-sizing: border-box;
+}
+
+.tg-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: #161922;
+  border: 1px solid #1f2433;
+  padding: 12px 16px;
+  border-radius: 12px;
+}
+
+.tg-btn-primary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #4285F4, #2a65cb);
+  color: #ffffff;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(66, 133, 244, 0.25);
+  font-family: inherit;
+}
+
+.tg-btn-primary:hover {
+  background: linear-gradient(135deg, #5393ff, #3273df);
+  box-shadow: 0 6px 16px rgba(66, 133, 244, 0.38);
+  transform: translateY(-1px);
+}
+
+.tg-btn-primary:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 8px rgba(66, 133, 244, 0.2);
+}
+
+.tg-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  color: #9ca3af;
+  background: #0f1117;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid #1f2433;
+}
+
+.tg-status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #34A853;
+  box-shadow: 0 0 6px rgba(52, 168, 83, 0.6);
+}
+
+.tg-status-dot.scanning {
+  background: #FBBC05;
+  box-shadow: 0 0 8px rgba(251, 188, 5, 0.8);
+  animation: pulse-dot 1s infinite alternate;
+}
+
+@keyframes pulse-dot {
+  from { opacity: 0.4; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1.2); }
+}
+
+.tg-main-area {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  background: #161922;
+  border: 1px solid #1f2433;
+  border-radius: 12px;
+  padding: 14px;
+  gap: 12px;
+  min-height: 0;
+}
+
+.tg-textarea-wrap {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.tg-textarea {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+  background: #0f1117;
+  border: 1px solid #1f2433;
+  border-radius: 8px;
+  padding: 14px;
+  color: #e8eaf0;
+  font-size: 13px;
+  line-height: 1.6;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, monospace;
+  resize: none;
+  outline: none;
+  transition: border-color 0.2s;
+  box-sizing: border-box;
+}
+
+.tg-textarea:focus {
+  border-color: #4285F4;
+}
+
+.tg-textarea::placeholder {
+  color: #4b5563;
+}
+
+.tg-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.tg-stats {
+  font-size: 12px;
+  color: #6b7280;
+}
+
+.tg-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.tg-btn-secondary {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: #1f2433;
+  color: #e8eaf0;
+  border: 1px solid #2d3448;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+}
+
+.tg-btn-secondary:hover {
+  background: #2a3144;
+  border-color: #3f4963;
+  color: #ffffff;
+}
+
+.tg-btn-secondary.copied {
+  background: #1e3a29;
+  border-color: #34A853;
+  color: #34A853;
+}

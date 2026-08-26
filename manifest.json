@@ -16,11 +16,19 @@
   "background": {
     "service_worker": "background/background.js"
   },
-  "permissions": ["storage", "tabs", "alarms"],
+  "permissions": ["storage", "tabs", "alarms", "scripting", "activeTab"],
   "host_permissions": [
-    "https://calendar.google.com/*"
+    "<all_urls>"
   ],
   "content_security_policy": {
-    "extension_pages": "default-src 'self'; frame-src https://calendar.google.com; style-src 'self' 'unsafe-inline'; script-src 'self'"
-  }
+    "extension_pages": "default-src 'self'; frame-src https://calendar.google.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'wasm-unsafe-eval'; img-src 'self' data: blob:; connect-src 'self' data: blob:"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "popup/text_grabber/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
