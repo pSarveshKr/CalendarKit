@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "CalendarKit",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Instant access to Google Calendar and essential utilities — all in one place, right from your toolbar.",
   "default_locale": "en",
   "action": {
@@ -16,7 +16,13 @@
   "background": {
     "service_worker": "background/background.js"
   },
-  "permissions": ["storage", "tabs", "alarms", "scripting", "activeTab"],
+  "permissions": [
+    "storage",
+    "tabs",
+    "alarms",
+    "scripting",
+    "activeTab"
+  ],
   "host_permissions": [
     "<all_urls>"
   ],
@@ -28,7 +34,9 @@
       "resources": [
         "popup/text_grabber/*"
       ],
-      "matches": ["<all_urls>"]
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ]
 }
