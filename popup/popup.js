@@ -1,7 +1,10 @@
 const tabCalendar = document.getElementById('tabCalendar');
 const tabCalculator = document.getElementById('tabCalculator');
+const tabTextGrabber = document.getElementById('tabTextGrabber');
+
 const calendarTab = document.getElementById('calendarTab');
 const calculatorTab = document.getElementById('calculatorTab');
+const textGrabberTab = document.getElementById('textGrabberTab');
 
 const calendarSVG = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
   <rect x="3" y="4" width="18" height="18" rx="2" stroke="#4285F4" stroke-width="2"/>
@@ -18,6 +21,11 @@ const calculatorSVG = `<svg width="22" height="22" viewBox="0 0 24 24" fill="non
   <path d="M7 8h10M7 12h4M7 16h4M15 12h2M15 16h2" stroke="#4285F4" stroke-width="2" stroke-linecap="round"/>
 </svg>`;
 
+const textGrabberSVG = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+  <rect x="3" y="3" width="18" height="18" rx="2" stroke="#4285F4" stroke-width="2"/>
+  <path d="M7 8h10M7 12h10M7 16h6" stroke="#4285F4" stroke-width="2" stroke-linecap="round"/>
+</svg>`;
+
 function setLogoSVG(svg) {
   document.querySelector('.logo').insertAdjacentHTML('afterbegin', svg);
   document.querySelector('.logo svg:last-of-type').remove();
@@ -26,8 +34,10 @@ function setLogoSVG(svg) {
 function switchToCalendar() {
   tabCalendar.classList.add('active');
   tabCalculator.classList.remove('active');
+  tabTextGrabber.classList.remove('active');
   calendarTab.style.display = 'flex';
   calculatorTab.style.display = 'none';
+  textGrabberTab.style.display = 'none';
   document.getElementById('refreshBtn').style.visibility = 'visible';
   document.getElementById('openFull').style.visibility = 'visible';
   document.getElementById('changeCalBtn').style.visibility = 'visible';
@@ -38,8 +48,10 @@ function switchToCalendar() {
 function switchToCalculator() {
   tabCalculator.classList.add('active');
   tabCalendar.classList.remove('active');
+  tabTextGrabber.classList.remove('active');
   calculatorTab.style.display = 'flex';
   calendarTab.style.display = 'none';
+  textGrabberTab.style.display = 'none';
   document.getElementById('refreshBtn').style.visibility = 'hidden';
   document.getElementById('openFull').style.visibility = 'hidden';
   document.getElementById('changeCalBtn').style.visibility = 'hidden';
@@ -47,12 +59,31 @@ function switchToCalculator() {
   setLogoSVG(calculatorSVG);
 }
 
-chrome.storage.local.get(['defaultTab'], (result) => {
+function switchToTextGrabber() {
+  tabTextGrabber.classList.add('active');
+  tabCalendar.classList.remove('active');
+  tabCalculator.classList.remove('active');
+  textGrabberTab.style.display = 'flex';
+  calendarTab.style.display = 'none';
+  calculatorTab.style.display = 'none';
+  document.getElementById('refreshBtn').style.visibility = 'hidden';
+  document.getElementById('openFull').style.visibility = 'hidden';
+  document.getElementById('changeCalBtn').style.visibility = 'hidden';
+  document.querySelector('.title').textContent = 'Text Grabber';
+  setLogoSVG(textGrabberSVG);
+}
+
+chrome.storage.local.get(['defaultTab', 'pendingOcrCapture'], (result) => {
   const def = result.defaultTab || 'calendar';
   const radio = document.querySelector(`input[name="defaultTab"][value="${def}"]`);
   if (radio) radio.checked = true;
-  if (def === 'calculator') {
+
+  if (result.pendingOcrCapture) {
+    switchToTextGrabber();
+  } else if (def === 'calculator') {
     switchToCalculator();
+  } else if (def === 'text_grabber') {
+    switchToTextGrabber();
   } else {
     switchToCalendar();
   }
@@ -60,6 +91,7 @@ chrome.storage.local.get(['defaultTab'], (result) => {
 
 tabCalendar.addEventListener('click', switchToCalendar);
 tabCalculator.addEventListener('click', switchToCalculator);
+tabTextGrabber.addEventListener('click', switchToTextGrabber);
 
 document.getElementById('settingsBtn').addEventListener('click', () => {
   const panel = document.getElementById('settingsPanel');
