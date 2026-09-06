@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Google Calendar</title>
+  <title>CalendarKit</title>
   <link rel="stylesheet" href="popup.css" />
   <link rel="stylesheet" href="calendar/calendar.css" />
   <link rel="stylesheet" href="calculator/calculator.css" />
@@ -51,6 +51,18 @@
             <line x1="10" y1="14" x2="21" y2="3" />
           </svg>
         </button>
+        <button id="feedbackBtn" class="btn-icon feedback-link" title="Share Feedback / Request Feature">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+            <line x1="8" y1="9" x2="16" y2="9" />
+            <line x1="8" y1="13" x2="13" y2="13" />
+          </svg>
+        </button>
+        <button id="kofiBtn" class="btn-icon kofi-link" title="Support Developer (Buy Me a Coffee)">
+          <span style="font-size: 15px; line-height: 1;">☕</span>
+        </button>
+        <div class="header-divider"></div>
         <button id="settingsBtn" class="btn-icon" title="Settings">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="3" />
@@ -74,7 +86,12 @@
       <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:#e8eaf0;">
         <input type="radio" name="defaultTab" value="text_grabber" style="accent-color:#4285F4;" /> Text Grabber
       </label>
-      <div style="border-top:1px solid #1f2433; margin-top:8px; padding-top:10px;">
+      <div
+        style="border-top:1px solid #1f2433; margin-top:8px; padding-top:10px; display:flex; flex-direction:column; gap:8px;">
+        <a class="feedback-link" href="#"
+          style="display:flex; align-items:center; gap:6px; font-size:11px; color:#6b7280; text-decoration:none;">
+          💬 <span>Request Feature / Feedback</span>
+        </a>
         <a class="kofi-link" href="#"
           style="display:flex; align-items:center; gap:6px; font-size:11px; color:#6b7280; text-decoration:none;">
           ☕ <span>Buy me a coffee</span>
@@ -113,7 +130,7 @@
         <div class="calc-main">
           <div class="calc-display">
             <div class="calc-expression" id="calcExpression"></div>
-            <div class="calc-result" id="calcResult">0</div>
+            <input type="text" class="calc-result" id="calcResult" value="0" autocomplete="off" spellcheck="false" />
           </div>
           <div class="calc-buttons">
             <button class="calc-btn span-two" data-action="clear">AC</button>
@@ -178,9 +195,10 @@
         </div>
 
         <div class="tg-main-area">
+          <div id="tgNoticeArea" style="display:none;"></div>
           <div class="tg-textarea-wrap">
             <textarea id="tgExtractedText" class="tg-textarea"
-              placeholder="Click 'Select Screen Area' above to drag and snip text from any image or webpage region..."></textarea>
+              placeholder="Click 'Select Screen Area' above, or paste an image (Ctrl+V / Cmd+V) / drag & drop here..."></textarea>
           </div>
           <div class="tg-footer">
             <span class="tg-stats" id="tgStatsText">0 words • 0 chars</span>
@@ -201,6 +219,7 @@
 
   </div>
 
+  <script src="constants.js"></script>
   <script src="calendar/calendar.js"></script>
   <script src="calculator/calculator.js"></script>
   <script src="text_grabber/tesseract.min.js"></script>

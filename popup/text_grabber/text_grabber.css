@@ -171,3 +171,46 @@
   border-color: #34A853;
   color: #34A853;
 }
+
+.tg-permission-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: rgba(66, 133, 244, 0.12);
+  border: 1px solid rgba(66, 133, 244, 0.35);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #e8eaf0;
+  box-sizing: border-box;
+}
+
+.tg-notice-text {
+  line-height: 1.4;
+  flex: 1;
+}
+
+.tg-notice-btn {
+  background: #4285F4;
+  color: #ffffff;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+  font-family: inherit;
+}
+
+.tg-notice-btn:hover {
+  background: #3367d6;
+}
+
+.tg-textarea-wrap.dragover {
+  outline: 2px dashed #4285F4;
+  outline-offset: -2px;
+  border-radius: 8px;
+}

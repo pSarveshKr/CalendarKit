@@ -84,7 +84,15 @@
   selectionBox.appendChild(sizeBadge);
   overlay.appendChild(selectionBox);
 
-  document.body.appendChild(overlay);
+  // Temporarily disable pointer-events on embed/object/iframe so PDF viewer plugin on Windows doesn't intercept clicks
+  const pluginElements = document.querySelectorAll('embed, object, iframe');
+  pluginElements.forEach(el => {
+    el.setAttribute('data-ck-prev-pe', el.style.pointerEvents || '');
+    el.style.setProperty('pointer-events', 'none', 'important');
+  });
+
+  const parent = document.body || document.documentElement;
+  parent.appendChild(overlay);
 
   let startX = 0;
   let startY = 0;
@@ -131,6 +139,16 @@
     window.removeEventListener('mousemove', onMouseMove, true);
     window.removeEventListener('mouseup', onMouseUp, true);
     window.removeEventListener('keydown', onKeyDown, true);
+
+    // Restore pointer-events on embeds/objects/iframes
+    pluginElements.forEach(el => {
+      const prev = el.getAttribute('data-ck-prev-pe');
+      if (prev !== null) {
+        el.style.pointerEvents = prev;
+        el.removeAttribute('data-ck-prev-pe');
+      }
+    });
+
     if (overlay && overlay.parentNode) {
       overlay.parentNode.removeChild(overlay);
     }
@@ -156,10 +174,12 @@
     const dpr = window.devicePixelRatio || 1;
 
     const cropRect = {
-      x: Math.round(left * dpr),
-      y: Math.round(top * dpr),
-      width: Math.round(width * dpr),
-      height: Math.round(height * dpr),
+      x: left,
+      y: top,
+      width: width,
+      height: height,
+      viewportWidth: window.innerWidth,
+      viewportHeight: window.innerHeight,
       dpr: dpr
     };
 

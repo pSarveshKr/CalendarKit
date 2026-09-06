@@ -38,9 +38,9 @@ function switchToCalendar() {
   calendarTab.style.display = 'flex';
   calculatorTab.style.display = 'none';
   textGrabberTab.style.display = 'none';
-  document.getElementById('refreshBtn').style.visibility = 'visible';
-  document.getElementById('openFull').style.visibility = 'visible';
-  document.getElementById('changeCalBtn').style.visibility = 'visible';
+  document.getElementById('refreshBtn').style.display = 'flex';
+  document.getElementById('openFull').style.display = 'flex';
+  document.getElementById('changeCalBtn').style.display = 'flex';
   document.querySelector('.title').textContent = 'Calendar';
   setLogoSVG(calendarSVG);
 }
@@ -52,11 +52,14 @@ function switchToCalculator() {
   calculatorTab.style.display = 'flex';
   calendarTab.style.display = 'none';
   textGrabberTab.style.display = 'none';
-  document.getElementById('refreshBtn').style.visibility = 'hidden';
-  document.getElementById('openFull').style.visibility = 'hidden';
-  document.getElementById('changeCalBtn').style.visibility = 'hidden';
+  document.getElementById('refreshBtn').style.display = 'none';
+  document.getElementById('openFull').style.display = 'none';
+  document.getElementById('changeCalBtn').style.display = 'none';
   document.querySelector('.title').textContent = 'Calculator';
   setLogoSVG(calculatorSVG);
+  if (window.focusCalculator) {
+    setTimeout(window.focusCalculator, 15);
+  }
 }
 
 function switchToTextGrabber() {
@@ -66,9 +69,9 @@ function switchToTextGrabber() {
   textGrabberTab.style.display = 'flex';
   calendarTab.style.display = 'none';
   calculatorTab.style.display = 'none';
-  document.getElementById('refreshBtn').style.visibility = 'hidden';
-  document.getElementById('openFull').style.visibility = 'hidden';
-  document.getElementById('changeCalBtn').style.visibility = 'hidden';
+  document.getElementById('refreshBtn').style.display = 'none';
+  document.getElementById('openFull').style.display = 'none';
+  document.getElementById('changeCalBtn').style.display = 'none';
   document.querySelector('.title').textContent = 'Text Grabber';
   setLogoSVG(textGrabberSVG);
 }
@@ -110,6 +113,14 @@ document.addEventListener('click', (e) => {
   if (!panel.contains(e.target) && e.target !== settingsBtn && !settingsBtn.contains(e.target)) {
     panel.style.display = 'none';
   }
+});
+
+document.querySelectorAll('.feedback-link').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const url = typeof APP_CONFIG !== 'undefined' ? APP_CONFIG.FEEDBACK_FORM_URL : 'https://forms.gle/VXd1gVj6s9FiVdhh8';
+    chrome.tabs.create({ url });
+  });
 });
 
 function updateExtensionIcon() {

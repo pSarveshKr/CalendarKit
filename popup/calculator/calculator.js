@@ -17,14 +17,124 @@ chrome.storage.local.get(['calcHistory'], (result) => {
 });
 
 function updateDisplay(value) {
-  calcResult.textContent = value || '0';
+  const displayVal = (value !== undefined && value !== null && value !== '') ? String(value) : '0';
+  if (calcResult) {
+    calcResult.value = displayVal;
+  }
+}
+
+function focusCalculator(selectEnd = true) {
+  const calcTab = document.getElementById('calculatorTab');
+  if (!calcTab || calcTab.style.display === 'none' || !calcResult) return;
+  calcResult.focus();
+  if (selectEnd) {
+    const len = calcResult.value.length;
+    calcResult.setSelectionRange(len, len);
+  }
+}
+
+window.focusCalculator = focusCalculator;
+
+let errorTimeout = null;
+
+function clearErrorStatus() {
+  if (errorTimeout) {
+    clearTimeout(errorTimeout);
+    errorTimeout = null;
+  }
+  if (calcExpression && (calcExpression.textContent === 'Syntax Error' || calcExpression.textContent === 'Cannot divide by zero')) {
+    calcExpression.textContent = '';
+    calcExpression.style.color = '';
+  }
+}
+
+function insertAtCursor(str) {
+  if (!calcResult) return;
+  clearErrorStatus();
+  let val = calcResult.value;
+  let start = calcResult.selectionStart ?? val.length;
+  let end = calcResult.selectionEnd ?? val.length;
+
+  // If display is currently default '0'
+  if (val === '0') {
+    if (str === '.') {
+      val = '0';
+      start = 1;
+      end = 1;
+    } else if (!'+-*/()÷×−'.includes(str)) {
+      val = '';
+      start = 0;
+      end = 0;
+    }
+  }
+
+  const before = val.slice(0, start);
+  const after = val.slice(end);
+  const newVal = before + str + after;
+
+  if (newVal.length > 30) return;
+
+  currentInput = newVal;
+  updateDisplay(newVal);
+
+  const newPos = before.length + str.length;
+  calcResult.focus();
+  calcResult.setSelectionRange(newPos, newPos);
+}
+
+function backspaceAtCursor() {
+  if (!calcResult) return;
+  clearErrorStatus();
+  let val = calcResult.value;
+  let start = calcResult.selectionStart ?? val.length;
+  let end = calcResult.selectionEnd ?? val.length;
+
+  if (start !== end) {
+    // Delete selection
+    const before = val.slice(0, start);
+    const after = val.slice(end);
+    const newVal = before + after;
+    currentInput = newVal;
+    updateDisplay(newVal || '0');
+    calcResult.focus();
+    const pos = newVal ? start : 1;
+    calcResult.setSelectionRange(pos, pos);
+  } else if (start > 0) {
+    // Delete character before cursor
+    const before = val.slice(0, start - 1);
+    const after = val.slice(start);
+    const newVal = before + after;
+    currentInput = newVal;
+    updateDisplay(newVal || '0');
+    calcResult.focus();
+    const pos = newVal ? start - 1 : 1;
+    calcResult.setSelectionRange(pos, pos);
+  }
+}
+
+function clearCalculator() {
+  clearErrorStatus();
+  currentInput = '';
+  calcExpression.textContent = '';
+  calcExpression.style.color = '';
+  updateDisplay('0');
+  focusCalculator();
 }
 
 function evaluate() {
-  if (!currentInput.trim()) return;
-  if (document.activeElement instanceof HTMLElement) document.activeElement.blur();
+  const exprToEval = (calcResult ? calcResult.value : currentInput) || '';
+  if (!exprToEval.trim() || exprToEval === '0') return;
+
   try {
-    const expression = currentInput;
+    let expression = exprToEval.trim();
+
+    // Auto-close unclosed parentheses if any
+    const openCount = (expression.match(/\(/g) || []).length;
+    const closeCount = (expression.match(/\)/g) || []).length;
+    if (openCount > closeCount) {
+      expression += ')'.repeat(openCount - closeCount);
+    }
+
     const sanitized = expression
       .replace(/×/g, '*')
       .replace(/÷/g, '/')
@@ -33,16 +143,39 @@ function evaluate() {
     if (result === null || !isFinite(result)) throw new Error('Invalid');
     const rounded = parseFloat(result.toFixed(10));
     addToHistory(expression, rounded);
+    clearErrorStatus();
     calcExpression.textContent = expression + ' =';
+    calcExpression.style.color = '';
     updateDisplay(rounded);
     currentInput = String(rounded);
+    focusCalculator();
   } catch (err) {
-    updateDisplay('Error');
-    setTimeout(() => {
-      currentInput = '';
-      calcExpression.textContent = '';
-      updateDisplay('0');
-    }, 1000);
+    // Show error feedback WITHOUT wiping the user's expression
+    const displayEl = document.querySelector('.calc-display');
+    if (displayEl) {
+      displayEl.classList.remove('error-shake');
+      void displayEl.offsetWidth;
+      displayEl.classList.add('error-shake');
+      setTimeout(() => displayEl.classList.remove('error-shake'), 400);
+    }
+
+    const errorMsg = (err && err.message === 'Div by zero') ? 'Cannot divide by zero' : 'Syntax Error';
+    if (calcExpression) {
+      calcExpression.textContent = errorMsg;
+      calcExpression.style.color = '#ef4444';
+      if (errorTimeout) clearTimeout(errorTimeout);
+      errorTimeout = setTimeout(() => {
+        if (calcExpression.textContent === 'Syntax Error' || calcExpression.textContent === 'Cannot divide by zero') {
+          calcExpression.textContent = '';
+          calcExpression.style.color = '';
+        }
+      }, 3000);
+    }
+
+    // Keep expression completely preserved in input and focus at the end so user can edit/backspace
+    currentInput = exprToEval;
+    updateDisplay(exprToEval);
+    focusCalculator(true);
   }
 }
 
@@ -134,9 +267,7 @@ function renderHistory() {
     item.className = 'history-item';
     item.innerHTML = `<span class="h-expr">${expression}</span><span class="h-result">${result}</span>`;
     item.addEventListener('click', () => {
-      currentInput += String(result);
-      calcExpression.textContent = currentInput;
-      updateDisplay(currentInput);
+      insertAtCursor(String(result));
       closeHistory();
     });
     calcHistory.appendChild(item);
@@ -160,62 +291,104 @@ function updateToggleIcon() {
 document.querySelectorAll('.calc-btn').forEach(btn => {
   btn.addEventListener('click', (e) => {
     e.preventDefault();
-    btn.blur();
     if (historyOpen) closeHistory();
     const value = btn.dataset.value;
     const action = btn.dataset.action;
 
     if (value !== undefined) {
-      if (currentInput.length >= 20) return;
-      currentInput += value;
-      calcExpression.textContent = currentInput;
-      updateDisplay(currentInput);
+      insertAtCursor(value);
     } else if (action === 'clear') {
-      currentInput = '';
-      calcExpression.textContent = '';
-      updateDisplay('0');
+      clearCalculator();
     } else if (action === 'backspace') {
-      currentInput = currentInput.slice(0, -1);
-      calcExpression.textContent = currentInput;
-      updateDisplay(currentInput || '0');
+      backspaceAtCursor();
     } else if (action === 'equals') {
       evaluate();
     }
   });
 });
 
-// Keyboard
+// Sync manual typing directly inside calcResult
+if (calcResult) {
+  calcResult.addEventListener('input', () => {
+    clearErrorStatus();
+    let val = calcResult.value;
+    // If leading '0' before a digit (e.g. '05' from paste/IME), replace it with the digit
+    if (/^0[0-9]/.test(val)) {
+      val = val.replace(/^0+/, '');
+      calcResult.value = val;
+    }
+    const raw = calcResult.value;
+    const clean = raw.replace(/[^0-9+\-*/().×÷−]/g, '');
+    if (clean !== raw) {
+      const pos = calcResult.selectionStart;
+      calcResult.value = clean;
+      if (pos !== null) {
+        calcResult.setSelectionRange(Math.max(0, pos - 1), Math.max(0, pos - 1));
+      }
+    }
+    currentInput = calcResult.value;
+  });
+}
+
+// Global Keyboard Handler
 document.addEventListener('keydown', (e) => {
   const calcTab = document.getElementById('calculatorTab');
   if (!calcTab || calcTab.style.display === 'none') return;
-  if (e.target.tagName === 'BUTTON') return; // prevent double trigger
 
-  if ('0123456789.'.includes(e.key)) {
-    if (currentInput.length >= 20) return;
-    e.preventDefault();
-    currentInput += e.key;
-  } else if (['+', '-', '*', '/','(', ')'].includes(e.key)) {
-    e.preventDefault();
-    currentInput += e.key;
-  } else if (e.key === 'Backspace') {
-    e.preventDefault();
-    currentInput = currentInput.slice(0, -1);
-  } else if (e.key === 'Escape') {
-    e.preventDefault();
-    currentInput = '';
-    calcExpression.textContent = '';
-    updateDisplay('0');
-    return;
-  } else if (e.key === 'Enter' || e.key === '=') {
+  // Don't intercept if user is typing inside setup input or text grabber textarea
+  if (e.target && (e.target.id === 'embedInput' || e.target.id === 'tgExtractedText')) return;
+
+  // Allow browser/system shortcuts like Ctrl+C, Ctrl+A, Cmd+C, Cmd+A, Cmd+V
+  if (e.ctrlKey || e.metaKey) return;
+
+  if (e.key === 'Enter' || e.key === '=') {
     e.preventDefault();
     evaluate();
     return;
-  } else {
+  }
+
+  if (e.key === 'Escape') {
+    e.preventDefault();
+    clearCalculator();
     return;
   }
 
-  calcExpression.textContent = currentInput;
-  updateDisplay(currentInput || '0');
+  if (e.key === 'Backspace') {
+    e.preventDefault();
+    backspaceAtCursor();
+    return;
+  }
+
+  // Route all mathematical typing through insertAtCursor so zero-replacement and validation are consistent
+  if ('0123456789.()'.includes(e.key)) {
+    e.preventDefault();
+    insertAtCursor(e.key);
+    return;
+  }
+
+  if (e.key === '+') {
+    e.preventDefault();
+    insertAtCursor('+');
+    return;
+  }
+
+  if (e.key === '-') {
+    e.preventDefault();
+    insertAtCursor('−');
+    return;
+  }
+
+  if (e.key === '*') {
+    e.preventDefault();
+    insertAtCursor('×');
+    return;
+  }
+
+  if (e.key === '/') {
+    e.preventDefault();
+    insertAtCursor('÷');
+    return;
+  }
 });
 
 // History toggle

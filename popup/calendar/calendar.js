@@ -27,6 +27,8 @@ frame.addEventListener('load', () => {
   if (!frame.src || frame.src === 'about:blank') return;
   frame.style.display = 'block';
   loadingState.style.display = 'none';
+  const refreshBtn = document.getElementById('refreshBtn');
+  if (refreshBtn) refreshBtn.classList.remove('spinning');
 });
 
 function showSetup() {
@@ -50,23 +52,30 @@ saveEmbed.addEventListener('click', () => {
 });
 
 document.getElementById('openFull').addEventListener('click', () => {
-  chrome.tabs.create({ url: savedUrl || 'https://calendar.google.com' });
+  const fallbackUrl = typeof APP_CONFIG !== 'undefined' ? APP_CONFIG.GCAL_DEFAULT_URL : 'https://calendar.google.com';
+  chrome.tabs.create({ url: savedUrl || fallbackUrl });
 });
 
-document.getElementById('refreshBtn').addEventListener('click', () => {
+document.getElementById('refreshBtn').addEventListener('click', function() {
   if (!savedUrl) return;
+  this.classList.add('spinning');
   loadingState.style.display = 'flex';
   frame.src = savedUrl;
+  setTimeout(() => this.classList.remove('spinning'), 1500);
 });
 
 openGCal.addEventListener('click', (e) => {
   e.preventDefault();
-  chrome.tabs.create({ url: 'https://calendar.google.com/calendar/r/settings' });
+  const url = typeof APP_CONFIG !== 'undefined' ? APP_CONFIG.GCAL_SETTINGS_URL : 'https://calendar.google.com/calendar/r/settings';
+  chrome.tabs.create({ url });
 });
 
-document.querySelector('.kofi-link').addEventListener('click', (e) => {
-  e.preventDefault();
-  chrome.tabs.create({ url: 'https://ko-fi.com/psarveshkr' });
+document.querySelectorAll('.kofi-link').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const url = typeof APP_CONFIG !== 'undefined' ? APP_CONFIG.KOFI_URL : 'https://ko-fi.com/psarveshkr';
+    chrome.tabs.create({ url });
+  });
 });
 
 document.getElementById('changeCalBtn').addEventListener('click', () => {
