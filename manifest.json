@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "CalendarKit",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Instant access to Google Calendar and essential utilities — all in one place, right from your toolbar.",
   "default_locale": "en",
   "action": {
