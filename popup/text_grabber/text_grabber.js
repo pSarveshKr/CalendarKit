@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const statusText = document.getElementById('tgStatusText');
   const statusDot = document.getElementById('tgStatusDot');
   const statsText = document.getElementById('tgStatsText');
+  const noticeArea = document.getElementById('tgNoticeArea');
 
   if (!selectAreaBtn || !textarea) return;
 
@@ -34,10 +35,45 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // File URL permission helper
+  function showFileUrlPermissionNotice() {
+    if (!noticeArea) return;
+    noticeArea.innerHTML = `
+      <div class="tg-permission-notice">
+        <div class="tg-notice-text">
+          <strong>📁 Local PDF / File Capture:</strong><br>
+          Please enable <em>"Allow access to file URLs"</em> in CalendarKit details.
+        </div>
+        <button class="tg-notice-btn" id="tgOpenExtensionsBtn">Open Settings</button>
+      </div>
+    `;
+    noticeArea.style.display = 'block';
+
+    const btn = document.getElementById('tgOpenExtensionsBtn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        chrome.tabs.create({ url: 'chrome://extensions/?id=' + chrome.runtime.id });
+      });
+    }
+    setStatus('Permission needed for local files/PDFs');
+  }
+
+  function hideNotice() {
+    if (noticeArea) {
+      noticeArea.style.display = 'none';
+      noticeArea.innerHTML = '';
+    }
+  }
+
   // 3. Load Saved Text or Process Pending Capture on Popup Open
   chrome.storage.local.get(['lastGrabbedText', 'pendingOcrCapture', 'ocrError'], (result) => {
     if (result.ocrError) {
-      setStatus('Error: ' + result.ocrError);
+      const err = result.ocrError;
+      if (err.includes('file URLs') || err.includes('file://')) {
+        showFileUrlPermissionNotice();
+      } else {
+        setStatus('Error: ' + err);
+      }
       chrome.storage.local.remove('ocrError');
       return;
     }
@@ -62,6 +98,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 5. Handle "Select Screen Area" button click
   selectAreaBtn.addEventListener('click', async () => {
+    hideNotice();
     setStatus('Opening overlay on active tab...', true);
 
     try {
@@ -84,8 +121,24 @@ document.addEventListener('DOMContentLoaded', () => {
         url.includes('chrome.google.com/webstore') ||
         url.includes('chromewebstore.google.com')
       ) {
-        setStatus('Cannot capture Chrome system/webstore pages. Open a regular website (e.g. google.com)!');
+        setStatus('Cannot capture Chrome system/webstore pages. Open a regular website or paste screenshot (Ctrl+V)!');
         return;
+      }
+
+      // Check if active tab is a local file:// URL
+      if (url.startsWith('file://')) {
+        const isAllowed = await new Promise((resolve) => {
+          if (chrome.extension && chrome.extension.isAllowedFileSchemeAccess) {
+            chrome.extension.isAllowedFileSchemeAccess(resolve);
+          } else {
+            resolve(true);
+          }
+        });
+
+        if (!isAllowed) {
+          showFileUrlPermissionNotice();
+          return;
+        }
       }
 
       // Inject overlay.js into active tab
@@ -98,10 +151,13 @@ document.addEventListener('DOMContentLoaded', () => {
       window.close();
     } catch (err) {
       console.error('Failed to inject overlay:', err);
-      if (err.message && err.message.includes('Cannot access')) {
-        setStatus('Cannot access this page. Try a regular website!');
+      const msg = (err && err.message) ? err.message : '';
+      if (msg.includes('file URLs') || (activeTab && activeTab.url && activeTab.url.startsWith('file://'))) {
+        showFileUrlPermissionNotice();
+      } else if (msg.includes('Cannot access')) {
+        setStatus('Cannot access this page. Open a regular webpage or paste screenshot (Ctrl+V)!');
       } else {
-        setStatus('Error: Could not inject overlay on this page.');
+        setStatus('Could not start screen snip. You can paste an image (Ctrl+V).');
       }
     }
   });
@@ -170,15 +226,28 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const img = new Image();
       img.onload = async () => {
+        // Accurately compute scale based on the actual captured image dimensions vs viewport
+        const scaleX = (cropRect.viewportWidth && img.naturalWidth)
+          ? (img.naturalWidth / cropRect.viewportWidth)
+          : (cropRect.dpr || 1);
+        const scaleY = (cropRect.viewportHeight && img.naturalHeight)
+          ? (img.naturalHeight / cropRect.viewportHeight)
+          : (cropRect.dpr || 1);
+
+        const sx = Math.round(cropRect.x * scaleX);
+        const sy = Math.round(cropRect.y * scaleY);
+        const sw = Math.round(cropRect.width * scaleX);
+        const sh = Math.round(cropRect.height * scaleY);
+
         const canvas = document.createElement('canvas');
-        canvas.width = cropRect.width;
-        canvas.height = cropRect.height;
+        canvas.width = Math.max(sw, 1);
+        canvas.height = Math.max(sh, 1);
         const ctx = canvas.getContext('2d');
 
         ctx.drawImage(
           img,
-          cropRect.x, cropRect.y, cropRect.width, cropRect.height,
-          0, 0, cropRect.width, cropRect.height
+          sx, sy, sw, sh,
+          0, 0, canvas.width, canvas.height
         );
 
         // Canvas image pre-processing (Grayscale & Contrast)
@@ -212,7 +281,103 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 9. Pre-process Canvas Image
+  // 9. Direct Image Processing (Clipboard Paste or Drag & Drop)
+  async function processDirectImage(dataUrl) {
+    hideNotice();
+    setStatus('Reading image...', true);
+
+    try {
+      const img = new Image();
+      img.onload = async () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = img.naturalWidth || img.width;
+        canvas.height = img.naturalHeight || img.height;
+        const ctx = canvas.getContext('2d');
+        ctx.drawImage(img, 0, 0);
+
+        preprocessCanvas(canvas);
+        setStatus('Reading text via OCR...', true);
+
+        const extractedText = await performOCR(canvas);
+        if (extractedText && extractedText.trim().length > 0) {
+          textarea.value = extractedText.trim();
+          updateStats();
+          chrome.storage.local.set({ lastGrabbedText: textarea.value });
+          setStatus('Text extracted successfully!');
+        } else {
+          setStatus('No text found in image.');
+        }
+      };
+
+      img.onerror = () => {
+        setStatus('Failed to load image.');
+      };
+
+      img.src = dataUrl;
+    } catch (err) {
+      console.error('Direct image OCR error:', err);
+      setStatus('OCR Processing failed.');
+    }
+  }
+
+  // 10. Support Clipboard Paste (Ctrl+V / Cmd+V)
+  window.addEventListener('paste', (e) => {
+    // If user is pasting plain text into textarea, allow default behavior
+    if (e.clipboardData && e.clipboardData.types.includes('text/plain') && document.activeElement === textarea) {
+      setTimeout(updateStats, 50);
+      return;
+    }
+
+    const items = (e.clipboardData || (e.originalEvent && e.originalEvent.clipboardData))?.items;
+    if (!items) return;
+
+    for (let item of items) {
+      if (item.type.indexOf('image') !== -1) {
+        e.preventDefault();
+        const blob = item.getAsFile();
+        if (blob) {
+          const reader = new FileReader();
+          reader.onload = (event) => {
+            processDirectImage(event.target.result);
+          };
+          reader.readAsDataURL(blob);
+          return;
+        }
+      }
+    }
+  });
+
+  // 11. Support Drag & Drop of Images
+  const dropZone = document.querySelector('.tg-textarea-wrap');
+  if (dropZone) {
+    ['dragenter', 'dragover'].forEach(name => {
+      dropZone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dragover');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(name => {
+      dropZone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dragover');
+      });
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const files = dt ? dt.files : null;
+      if (files && files[0] && files[0].type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = (event) => {
+          processDirectImage(event.target.result);
+        };
+        reader.readAsDataURL(files[0]);
+      }
+    });
+  }
+
+  // 12. Pre-process Canvas Image
   function preprocessCanvas(canvas) {
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -232,7 +397,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ctx.putImageData(imageData, 0, 0);
   }
 
-  // 10. OCR Engine
+  // 13. OCR Engine
   async function performOCR(canvas) {
     if (typeof Tesseract !== 'undefined' && Tesseract.recognize) {
       try {
@@ -262,7 +427,7 @@ document.addEventListener('DOMContentLoaded', () => {
     return fallbackOCR(canvas);
   }
 
-  // 11. Fallback OCR
+  // 14. Fallback OCR
   function fallbackOCR(canvas) {
     const ctx = canvas.getContext('2d', { willReadFrequently: true });
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
