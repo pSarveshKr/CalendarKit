@@ -1,42 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Privacy Policy - CalendarKit</title>
   <style>
-    body { font-family: sans-serif; max-width: 800px; margin: 40px auto; padding: 0 20px; color: #333; line-height: 1.7; }
-    h1 { color: #4285F4; }
-    h2 { color: #333; margin-top: 28px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      max-width: 820px;
+      margin: 40px auto;
+      padding: 0 24px;
+      color: #202124;
+      line-height: 1.75;
+      background-color: #ffffff;
+    }
+
+    h1 {
+      color: #1a73e8;
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .meta-info {
+      color: #5f6368;
+      font-size: 14px;
+      margin-bottom: 28px;
+      border-bottom: 1px solid #dadce0;
+      padding-bottom: 16px;
+    }
+
+    h2 {
+      color: #202124;
+      font-size: 20px;
+      margin-top: 32px;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #f1f3f4;
+      padding-bottom: 6px;
+    }
+
+    h3 {
+      color: #3c4043;
+      font-size: 16px;
+      margin-top: 20px;
+      margin-bottom: 8px;
+    }
+
+    p {
+      margin-bottom: 14px;
+      color: #3c4043;
+    }
+
+    ul {
+      margin-bottom: 16px;
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 8px;
+      color: #3c4043;
+    }
+
+    li strong {
+      color: #202124;
+    }
+
+    .highlight-box {
+      background-color: #e8f0fe;
+      border-left: 4px solid #1a73e8;
+      padding: 14px 18px;
+      border-radius: 4px;
+      margin: 20px 0;
+      font-size: 14.5px;
+    }
+
+    a {
+      color: #1a73e8;
+      text-decoration: none;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    code {
+      background: #f1f3f4;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 13px;
+      font-family: monospace;
+    }
   </style>
 </head>
+
 <body>
   <h1>Privacy Policy</h1>
-  <p><strong>Extension:</strong> CalendarKit</p>
-  <p><strong>Last updated:</strong> May 2026</p>
+  <div class="meta-info">
+    <strong>Extension:</strong> CalendarKit (Version 1.2.0)<br />
+    <strong>Last Updated:</strong> September 2026
+  </div>
 
-  <h2>Data Collection</h2>
-  <p>CalendarKit does <strong>not</strong> collect, store, or transmit any personal data to external servers.</p>
+  <div class="highlight-box">
+    <strong>Summary:</strong> CalendarKit is built with a strict <strong>100% privacy-first and client-side</strong> architecture. We do <strong>not</strong> collect, store, track, sell, or transmit any of your personal data, browsing history, search terms, or screen captures to external servers. Everything runs entirely inside your local browser.
+  </div>
 
-  <h2>Local Storage</h2>
-  <p>The extension stores the following data locally on your device using Chrome's storage API:</p>
+  <h2>1. Data Collection & Processing</h2>
+  <p>CalendarKit does <strong>not</strong> operate any external servers or databases. All features operate locally within your browser:</p>
   <ul>
-    <li>Your Google Calendar embed URL</li>
-    <li>Calculator history</li>
-    <li>Your default tab preference</li>
-  </ul>
-  <p>This data never leaves your device.</p>
-
-  <h2>Third Party Services</h2>
-  <p>CalendarKit embeds Google Calendar via an iframe. Google's own <a href="https://policies.google.com/privacy">Privacy Policy</a> applies to your calendar data.</p>
-
-  <h2>Permissions</h2>
-  <ul>
-    <li><strong>storage</strong> — To save your preferences locally</li>
-    <li><strong>tabs</strong> — To open Google Calendar in a new tab</li>
-    <li><strong>alarms</strong> — To update the extension icon daily</li>
+    <li><strong>Google Calendar:</strong> CalendarKit displays your Google Calendar via an official Google embed iframe. Authentication, calendar events, and schedule data are handled directly between your browser and Google's secure servers in accordance with <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google's Privacy Policy</a>.</li>
+    <li><strong>Smart Calculator:</strong> Mathematical expressions and calculation histories are evaluated and stored strictly in your local browser memory.</li>
+    <li><strong>Text Grabber (Screen OCR):</strong> When you choose to select a screen area, the captured image region is processed 100% offline on your device using local WebAssembly (Tesseract.js). Captured images and extracted text never leave your machine.</li>
+    <li><strong>Multi Finder (In-Page Search):</strong> Searches and highlights keyword terms directly in your active webpage's DOM. Your search queries, term counts, and navigation positions are never logged, tracked, or sent anywhere.</li>
   </ul>
 
-  <h2>Contact</h2>
-  <p>For any questions, contact: <a href="mailto:cyphonplay@gmail.com">cyphonplay@gmail.com</a></p>
+  <h2>2. Local Storage</h2>
+  <p>The extension uses Chrome's local storage APIs (<code>chrome.storage.local</code> and <code>chrome.storage.sync</code>) strictly to preserve your user preferences across browser sessions:</p>
+  <ul>
+    <li>Your custom Google Calendar embed URL</li>
+    <li>Calculator calculation history</li>
+    <li>Default startup tab preference</li>
+    <li>Multi Finder custom keyboard shortcut configuration</li>
+    <li>Multi Finder custom highlight color selections</li>
+  </ul>
+  <p>This data is stored purely on your personal device and can be cleared at any time by uninstalling the extension or resetting its settings.</p>
+
+  <h2>3. Permissions & Justification</h2>
+  <p>CalendarKit requests only the minimum set of permissions necessary to deliver its core productivity features, in compliance with Chrome Web Store Developer Policies:</p>
+  <ul>
+    <li><strong><code>storage</code></strong> — Required to save your calendar URL, calculation history, custom shortcuts, and highlight color preferences locally on your device.</li>
+    <li><strong><code>tabs</code></strong> — Required to open calendar views, extension shortcut settings, and external links in new browser tabs, and to broadcast shortcut configuration updates between open tabs.</li>
+    <li><strong><code>activeTab</code></strong> — Granted only when you interact with the extension. Used to capture the user-selected screen region for Text Grabber OCR and to open the Multi Finder overlay on your currently active webpage.</li>
+    <li><strong><code>scripting</code></strong> — Required to launch the interactive screen-selection overlay for Text Grabber and inject the Multi Finder search interface on the active page upon your command.</li>
+    <li><strong><code>Host Permissions (&lt;all_urls&gt;)</code></strong> — Required exclusively to allow the Multi Finder search overlay and Text Grabber selection tool to function across any standard webpage you choose to use them on. No webpage content is collected, stored, or transmitted to any third party.</li>
+  </ul>
+
+  <h2>4. Third-Party Services & Analytics</h2>
+  <p>CalendarKit contains <strong>zero third-party tracking scripts, zero advertising networks, and zero analytics SDKs</strong>. We do not use Google Analytics or any telemetric tracking services.</p>
+
+  <h2>5. Security</h2>
+  <p>CalendarKit is built strictly on Manifest V3, adhering to Google Chrome's latest security, permission, and sandboxing standards. Content scripts run in isolated execution environments to ensure safe and tamper-proof operation.</p>
+
+  <h2>6. Changes to This Policy</h2>
+  <p>If we update our privacy policy in future versions, the revised policy will be posted on this page with an updated revision date.</p>
+
+  <h2>7. Contact & Support</h2>
+  <p>If you have any questions, feedback, or concerns regarding this Privacy Policy or CalendarKit, please contact:</p>
+  <p><strong>Email:</strong> <a href="mailto:cyphonplay@gmail.com">cyphonplay@gmail.com</a></p>
 </body>
+
 </html>

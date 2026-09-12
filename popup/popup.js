@@ -1,10 +1,12 @@
 const tabCalendar = document.getElementById('tabCalendar');
 const tabCalculator = document.getElementById('tabCalculator');
 const tabTextGrabber = document.getElementById('tabTextGrabber');
+const tabMultiFinder = document.getElementById('tabMultiFinder');
 
 const calendarTab = document.getElementById('calendarTab');
 const calculatorTab = document.getElementById('calculatorTab');
 const textGrabberTab = document.getElementById('textGrabberTab');
+const multiFinderTab = document.getElementById('multiFinderTab');
 
 const calendarSVG = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
   <rect x="3" y="4" width="18" height="18" rx="2" stroke="#4285F4" stroke-width="2"/>
@@ -26,6 +28,14 @@ const textGrabberSVG = `<svg width="22" height="22" viewBox="0 0 24 24" fill="no
   <path d="M7 8h10M7 12h10M7 16h6" stroke="#4285F4" stroke-width="2" stroke-linecap="round"/>
 </svg>`;
 
+const multiFinderSVG = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+  <circle cx="11" cy="11" r="7" stroke="#4285F4" stroke-width="2"/>
+  <path d="M21 21l-4.35-4.35" stroke="#4285F4" stroke-width="2" stroke-linecap="round"/>
+  <circle cx="9" cy="9" r="1.5" fill="#FFE066"/>
+  <circle cx="13" cy="9" r="1.5" fill="#38D9A9"/>
+  <circle cx="11" cy="13" r="1.5" fill="#FF922B"/>
+</svg>`;
+
 function setLogoSVG(svg) {
   document.querySelector('.logo').insertAdjacentHTML('afterbegin', svg);
   document.querySelector('.logo svg:last-of-type').remove();
@@ -35,9 +45,11 @@ function switchToCalendar() {
   tabCalendar.classList.add('active');
   tabCalculator.classList.remove('active');
   tabTextGrabber.classList.remove('active');
+  tabMultiFinder.classList.remove('active');
   calendarTab.style.display = 'flex';
   calculatorTab.style.display = 'none';
   textGrabberTab.style.display = 'none';
+  multiFinderTab.style.display = 'none';
   document.getElementById('refreshBtn').style.display = 'flex';
   document.getElementById('openFull').style.display = 'flex';
   document.getElementById('changeCalBtn').style.display = 'flex';
@@ -49,9 +61,11 @@ function switchToCalculator() {
   tabCalculator.classList.add('active');
   tabCalendar.classList.remove('active');
   tabTextGrabber.classList.remove('active');
+  tabMultiFinder.classList.remove('active');
   calculatorTab.style.display = 'flex';
   calendarTab.style.display = 'none';
   textGrabberTab.style.display = 'none';
+  multiFinderTab.style.display = 'none';
   document.getElementById('refreshBtn').style.display = 'none';
   document.getElementById('openFull').style.display = 'none';
   document.getElementById('changeCalBtn').style.display = 'none';
@@ -66,14 +80,32 @@ function switchToTextGrabber() {
   tabTextGrabber.classList.add('active');
   tabCalendar.classList.remove('active');
   tabCalculator.classList.remove('active');
+  tabMultiFinder.classList.remove('active');
   textGrabberTab.style.display = 'flex';
   calendarTab.style.display = 'none';
   calculatorTab.style.display = 'none';
+  multiFinderTab.style.display = 'none';
   document.getElementById('refreshBtn').style.display = 'none';
   document.getElementById('openFull').style.display = 'none';
   document.getElementById('changeCalBtn').style.display = 'none';
   document.querySelector('.title').textContent = 'Text Grabber';
   setLogoSVG(textGrabberSVG);
+}
+
+function switchToMultiFinder() {
+  tabMultiFinder.classList.add('active');
+  tabCalendar.classList.remove('active');
+  tabCalculator.classList.remove('active');
+  tabTextGrabber.classList.remove('active');
+  multiFinderTab.style.display = 'flex';
+  calendarTab.style.display = 'none';
+  calculatorTab.style.display = 'none';
+  textGrabberTab.style.display = 'none';
+  document.getElementById('refreshBtn').style.display = 'none';
+  document.getElementById('openFull').style.display = 'none';
+  document.getElementById('changeCalBtn').style.display = 'none';
+  document.querySelector('.title').textContent = 'Multi Finder';
+  setLogoSVG(multiFinderSVG);
 }
 
 chrome.storage.local.get(['defaultTab', 'pendingOcrCapture'], (result) => {
@@ -87,6 +119,8 @@ chrome.storage.local.get(['defaultTab', 'pendingOcrCapture'], (result) => {
     switchToCalculator();
   } else if (def === 'text_grabber') {
     switchToTextGrabber();
+  } else if (def === 'multi_finder') {
+    switchToMultiFinder();
   } else {
     switchToCalendar();
   }
@@ -95,6 +129,7 @@ chrome.storage.local.get(['defaultTab', 'pendingOcrCapture'], (result) => {
 tabCalendar.addEventListener('click', switchToCalendar);
 tabCalculator.addEventListener('click', switchToCalculator);
 tabTextGrabber.addEventListener('click', switchToTextGrabber);
+tabMultiFinder.addEventListener('click', switchToMultiFinder);
 
 document.getElementById('settingsBtn').addEventListener('click', () => {
   const panel = document.getElementById('settingsPanel');

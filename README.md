@@ -1,148 +1,117 @@
+<div align="center">
+
 # CalendarKit 🗓️
 
-> Your Mac's missing taskbar — instant Calendar, Calculator, and **Text Grabber (OCR)**. Right where you work.
+**The All-in-One Productivity Powerpack for Chrome & Mac**
+
+Instant Google Calendar, Smart Calculator, Offline Screen OCR, and Multi-Term Web Highlighter — right where you work.
+
+[![Chrome Web Store](https://img.shields.io/badge/Chrome_Web_Store-v1.2.0-blue.svg?logo=googlechrome&logoColor=white)](https://chromewebstore.google.com/detail/nhcbepdcigkmidijjchdfnngloaemfcn)
+[![Manifest V3](https://img.shields.io/badge/Manifest-V3-success.svg)](#)
+[![Privacy Friendly](https://img.shields.io/badge/Privacy-100%25_Offline-green.svg)](#privacy--security)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
+<br/>
 
 ![CalendarKit Banner](./assets/banner.png)
 
----
-
-## The Problem
-
-If you've ever switched from **Windows to Mac**, you know this feeling.
-
-On Windows, you click the clock in the taskbar — and boom, a full calendar pops up. You can check next month, the month after, scroll through dates, all without ever leaving what you were doing. It's seamless.
-
-On Mac? Click the clock. You see today's date. That's it.
-
-Want to check what day December 15th falls on? You have to:
-1. Open the Calendar app
-2. Watch it take over your screen
-3. Navigate to December
-4. Check your date
-5. Close the app
-6. Find your way back to what you were doing
-
-Every. Single. Time.
-
-And calculators or copying text from images/unselectable text on screen? Same story. You're in the middle of a spreadsheet, a document, a video, or an image — and you need to copy text or do a quick calculation. On Mac, you're opening separate apps or tools, switching contexts, losing your flow.
-
-**This constant context switching kills productivity.** And it's completely unnecessary.
+</div>
 
 ---
 
-## The Solution
+## 💡 Why CalendarKit?
 
-**CalendarKit** brings the Windows taskbar experience to your Mac — as a Chrome extension.
+Switching contexts breaks your flow. You shouldn't have to open separate applications or leave your active webpage just to check a date, calculate a quick number, grab text from an image, or search multiple keywords across a document.
 
-Click the icon in your toolbar. Your full Google Calendar appears, right there, without switching screens. Check any month, any year. See your events. Then close it and continue exactly where you left off.
+**CalendarKit brings essential everyday tools into one unified, distraction-free extension:**
 
-Need to calculate something? Switch to the built-in Calculator tab — without opening a single new window.
-
-Need to copy text from an image, diagram, PDF, or uncopyable webpage? Switch to the **Text Grabber** tab, click **Select Screen Area**, drag a box over any screen area, and instantly get the extracted text in your editor with a 1-click Copy button!
-
-**Everything you need. Right where you are.**
+- 📅 **Google Calendar at a Glance** — View months, years, and your full schedule without launching a heavy calendar window.
+- 🧮 **Instant Calculator** — Calculate math expressions with history retention right in your toolbar.
+- 🔍 **Text Grabber (OCR)** — Select any area of your screen to extract uncopyable text from images, slides, videos, and PDFs.
+- ⚡ **Multi Finder** — Search and highlight up to **5 different terms simultaneously** with vibrant colors on any webpage (`Cmd+Shift+F` / `Ctrl+Shift+F`).
 
 ---
 
-## Features
+## ✨ Features at a Glance
 
-### 📅 Full Google Calendar
-- Complete monthly calendar view in a popup
-- Navigate to **any month, any year** — forward or backward
-- See all your events at a glance
-- One-click to open full Google Calendar in a new tab
-- Refresh button to sync latest events
+### 📅 Google Calendar
+* Full monthly interactive calendar view in a lightweight popup.
+* Seamless navigation across any month or year.
+* Real-time event sync and 1-click shortcut to open the full calendar in a new tab.
+* Switch between multiple calendar accounts effortlessly.
 
 ### 🧮 Built-in Calculator
-- Clean, fast calculator — always one click away
-- Full expression support including brackets `(2+3)*4`
-- **Persistent history** — your calculations survive browser restarts
-- Click any history item to reuse the result
-- Keyboard support — type naturally with numpad or keyboard
+* Always one click away — no need to open a separate app.
+* Supports complex expressions and brackets, e.g. `(250 * 1.18) - 45`.
+* **Persistent History**: Survives browser restarts; click any past calculation to reuse it.
+* Full keyboard and numpad support for rapid calculations.
 
-### 🔍 Text Grabber (Screen OCR Text Extractor)
-- **Select Any Screen Area**: Click "Select Screen Area" to darken the screen and use a custom crosshair cursor to drag-select any text on screen.
-- **Copy Uncopyable Text**: Easily extract text from images, non-selectable web text, diagrams, videos, PDFs, and canvas elements.
-- **1-Click Copy & Clean Editor**: View extracted text in a clean monospace editor with real-time word and character counters, and copy it to your clipboard with 1 click.
-- **100% Offline & Private**: Runs client-side WASM OCR completely on your machine. Zero network calls, zero data uploads, zero external tracking.
+### 🔍 Text Grabber (Offline Screen OCR)
+* **Drag-to-Select**: Click "Select Screen Area" to draw a box over any screen region.
+* **Copy Uncopyable Text**: Extract text from images, diagrams, video frames, PDFs, and protected websites.
+* **1-Click Copy**: Extracted text appears in a clean editor with word/character counters.
+* **100% Offline & Private**: Powered by local WebAssembly. Zero data uploads, zero cloud tracking.
 
-### ⚙️ Smart Settings
-- Set your **default tab** — Calendar, Calculator, or Text Grabber
-- CalendarKit remembers your preference automatically
-- Change your calendar URL anytime
-
-### 🎨 Design
-- Dark theme — easy on the eyes
-- Clean, minimal interface — no clutter
-- Glassmorphic UI with smooth micro-animations
-
-### 🔒 Privacy & Security First (Chrome Web Store Compliant)
-- **100% Local Processing**: All calendar views, calculations, and OCR text extractions are executed locally inside your browser.
-- **Zero External Telemetry**: No third-party servers, no analytics, no external script imports.
-- **Manifest V3 Compliant**: Adheres to strict Chrome Extension Content Security Policy (`script-src 'self' 'wasm-unsafe-eval'`).
-- **No Data Collection**: Your schedule, calculations, and grabbed text never leave your computer.
+### ⚡ Multi Finder (Multi-Term Highlighter)
+* **Simultaneous 5-Color Search**: Highlight up to 5 different terms at once with distinct pastel colors.
+* **Smart Selection Auto-Fill**: Highlight text on any website and press `Cmd+Shift+F` (Mac) or `Ctrl+Shift+F` (Windows) to instantly search it.
+* **Sequential Terms**: Press the shortcut on new selections to automatically populate Term 2, 3, 4, and 5!
+* **Customizable Shortcut (Replace Native Ctrl+F)**: Record any custom shortcut directly in the popup. You can even set it to **`Ctrl+F`** (or **`Cmd+F`**) to replace Chrome's basic single-word search bar with this advanced multi-color finder — everything runs smoothly with zero conflicts.
+* **Per-Term Filters**: Independent **Aa** (Match Case) and **W** (Whole Word) toggles for each search field.
+* **Seamless Match Navigation**: Dedicated `▲` / `▼` buttons and `Enter` / `Shift+Enter` keys with real-time counters (`1/12`).
+* **Draggable & Minimizable**: Move the search overlay anywhere on screen (double-click header to reset), or collapse it into a sleek mini pill.
+* **Persistent Colors**: Pick any custom highlight color — your preferred colors stay saved and synced across all tabs.
+* **Shadow DOM Isolation**: Runs inside an isolated Shadow DOM (`z-index: 2147483647`) so webpage styling never breaks the interface.
 
 ---
 
-## Screenshots
+## 📸 Screenshots
 
-| Calendar View | Calculator View | Text Grabber View | Settings |
-|---|---|---|---|
-| ![Calendar](./assets/screenshot-calendar.png) | ![Calculator](./assets/screenshot-calculator.png) | ![Text Grabber](./assets/screenshot-text-grabber.png) | ![Settings](./assets/screenshot-settings.png) |
+| Google Calendar | Calculator |
+|:---:|:---:|
+| ![Calendar](./assets/screenshot-calendar.png) | ![Calculator](./assets/screenshot-calculator.png) |
+
+| Text Grabber (OCR) | Multi Finder (Multi-Term Highlighter) |
+|:---:|:---:|
+| ![Text Grabber](./assets/screenshot-text-grabber.png) | ![Multi Finder](./assets/screenshot-multi-finder.png) |
 
 ---
 
-## Installation
+## 🚀 Installation
 
-### From Chrome Web Store
-[Install CalendarKit](https://chromewebstore.google.com/detail/nhcbepdcigkmidijjchdfnngloaemfcn)
+### Option 1: Chrome Web Store (Recommended)
+Install directly with 1 click from the [Chrome Web Store](https://chromewebstore.google.com/detail/nhcbepdcigkmidijjchdfnngloaemfcn).
 
-### Manual Install (Developer Mode)
-
-1. Clone this repository
-```bash
+### Option 2: Manual Installation (Developer Mode)
+1. Clone this repository:
+   ```bash
    git clone https://github.com/pSarveshKr/CalendarKit.git
-```
-2. Open Chrome and go to `chrome://extensions`
-3. Enable **Developer mode** (top right toggle)
-4. Click **Load unpacked**
-5. Select the `CalendarKit` folder
-6. The CalendarKit icon will appear in your toolbar
+   ```
+2. Open Chrome and navigate to `chrome://extensions`.
+3. Enable **Developer mode** (toggle in the top-right corner).
+4. Click **Load unpacked** and select the `CalendarKit` directory.
+5. Pin **CalendarKit** to your Chrome toolbar and enjoy!
 
 ---
 
-## How to Use Text Grabber
+## 🔒 Privacy & Security
 
-1. Open the CalendarKit extension from your Chrome toolbar.
-2. Click on the **Text Grabber** tab (or set it as your Default Tab in Settings).
-3. Click the **"Select Screen Area"** button.
-4. The extension popup will close, and your screen will dim slightly with a crosshair cursor (`+`).
-5. Click and drag over any area containing text (images, slides, PDFs, code, unselectable webpage text).
-6. Release the mouse button — CalendarKit automatically captures the region, runs OCR, re-opens the extension popup, and displays the extracted text in the editor.
-7. Click **"Copy Text"** to copy the extracted text to your clipboard!
+CalendarKit is built with a strict **privacy-first** architecture:
+* **Zero Telemetry**: No third-party servers, no analytics, no external tracking scripts.
+* **100% Client-Side**: Calendar data, calculations, OCR images, and search terms execute entirely inside your local browser memory.
+* **Manifest V3 Compliant**: Adheres to Google Chrome's highest security standards.
+* **No Cloud Storage**: Your preferences and history stay securely on your device.
 
 ---
 
-## Privacy & Security Statement
+## 📄 License
 
-CalendarKit collects **absolutely no data**.
-
-- Your calendar URL is stored locally using Chrome's `storage.local` API.
-- Your calculator history stays strictly on your device.
-- All OCR text extractions run 100% client-side using bundled local WebAssembly scripts.
-- No screenshots or extracted text are ever transmitted to any remote server or third party.
-- No analytics, no tracking scripts, no remote code execution.
+This project is licensed under the [MIT License](./LICENSE) — free to use, modify, and distribute.
 
 ---
 
-## License
+## ☕ Support
 
-MIT License — free to use, modify, and distribute.
+If CalendarKit helps boost your daily productivity, consider supporting its development:
 
----
-
-## Support
-
-If CalendarKit made your workflow easier, consider buying me a coffee ☕
-
-[![Ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/psarveshkr)
+[![Buy Me A Coffee](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/psarveshkr)
