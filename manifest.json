@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "CalendarKit",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "Instant access to Google Calendar and essential utilities — all in one place, right from your toolbar.",
   "default_locale": "en",
   "action": {
@@ -19,12 +19,32 @@
   "permissions": [
     "storage",
     "tabs",
-    "alarms",
     "scripting",
     "activeTab"
   ],
   "host_permissions": [
     "<all_urls>"
+  ],
+  "commands": {
+    "toggle-multi-finder": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+F",
+        "mac": "Command+Shift+F"
+      },
+      "description": "Toggle Multi Finder search overlay"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "popup/multi_finder/multi_finder_content.js"
+      ],
+      "run_at": "document_idle",
+      "all_frames": false
+    }
   ],
   "content_security_policy": {
     "extension_pages": "default-src 'self'; frame-src https://calendar.google.com; style-src 'self' 'unsafe-inline'; script-src 'self' 'wasm-unsafe-eval'; img-src 'self' data: blob:; connect-src 'self' data: blob:"

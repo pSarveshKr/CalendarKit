@@ -1,0 +1,267 @@
+/* Multi Finder Tab in CalendarKit Popup */
+
+.mf-container {
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - 10px);
+  padding: 24px 32px;
+  gap: 20px;
+  overflow-y: auto;
+  color: #e8eaf0;
+}
+
+.mf-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(135deg, rgba(66, 133, 244, 0.12) 0%, rgba(56, 217, 169, 0.08) 100%);
+  border: 1px solid rgba(66, 133, 244, 0.25);
+  border-radius: 14px;
+  padding: 20px 24px;
+}
+
+.mf-hero-text h2 {
+  font-size: 19px;
+  font-weight: 700;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.mf-hero-text p {
+  font-size: 13px;
+  color: #9aa0a6;
+  max-width: 480px;
+  line-height: 1.5;
+}
+
+.mf-launch-btn {
+  background: #4285F4;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 12px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(66, 133, 244, 0.4);
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.mf-launch-btn:hover {
+  background: #3367D6;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(66, 133, 244, 0.5);
+}
+
+.mf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.mf-card {
+  background: #161922;
+  border: 1px solid #1f2433;
+  border-radius: 12px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.mf-card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: #f1f3f9;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mf-shortcut-display {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #0f1117;
+  border: 1px solid #2a3147;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.mf-kbd {
+  background: #1f2433;
+  border: 1px solid #374151;
+  border-radius: 6px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #8ab4f8;
+  box-shadow: 0 2px 0 #111827;
+  letter-spacing: 0.5px;
+}
+
+.mf-shortcut-recorder {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mf-recorder-box {
+  background: #0f1117;
+  border: 1px dashed #374151;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 12px;
+  color: #9ca3af;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mf-recorder-box:hover, .mf-recorder-box.recording {
+  border-color: #4285F4;
+  color: #e8eaf0;
+  background: rgba(66, 133, 244, 0.05);
+}
+
+.mf-btn-group {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.mf-btn-secondary {
+  flex: 1;
+  background: #1f2433;
+  border: 1px solid #2a3147;
+  color: #e8eaf0;
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mf-btn-secondary:hover {
+  background: #2a3147;
+  border-color: #374151;
+}
+
+.mf-btn-danger {
+  background: rgba(234, 67, 53, 0.1);
+  border: 1px solid rgba(234, 67, 53, 0.25);
+  color: #f28b82;
+  border-radius: 6px;
+  padding: 7px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.mf-btn-danger:hover {
+  background: rgba(234, 67, 53, 0.2);
+}
+
+.mf-features-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.mf-feature-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #9ca3af;
+}
+
+.mf-feature-item strong {
+  color: #e8eaf0;
+}
+
+.mf-modal-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.mf-modal {
+  background: #161922;
+  border: 1px solid #2a3147;
+  border-radius: 14px;
+  padding: 24px;
+  max-width: 380px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6);
+}
+
+.mf-modal h3 {
+  font-size: 16px;
+  color: #ffffff;
+}
+
+.mf-modal p {
+  font-size: 13px;
+  color: #9ca3af;
+  line-height: 1.5;
+}
+
+.mf-modal-btn {
+  background: #4285F4;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.mf-shortcut-conflict {
+  background: rgba(245, 158, 11, 0.12);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #fbbf24;
+}
+
+.mf-chrome-shortcuts-link {
+  font-size: 11px;
+  color: #8ab4f8;
+  cursor: pointer;
+  text-align: center;
+  margin-top: 2px;
+  transition: all 0.15s ease;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.mf-chrome-shortcuts-link:hover {
+  color: #d2e3fc;
+}
+

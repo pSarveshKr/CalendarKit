@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="calendar/calendar.css" />
   <link rel="stylesheet" href="calculator/calculator.css" />
   <link rel="stylesheet" href="text_grabber/text_grabber.css" />
+  <link rel="stylesheet" href="multi_finder/multi_finder_tab.css" />
 </head>
 
 <body>
@@ -29,6 +30,7 @@
         <button class="tab active" id="tabCalendar">Calendar</button>
         <button class="tab" id="tabCalculator">Calculator</button>
         <button class="tab" id="tabTextGrabber">Text Grabber</button>
+        <button class="tab" id="tabMultiFinder">Multi Finder</button>
       </div>
       <div class="actions">
         <button id="refreshBtn" class="btn-icon" title="Refresh">
@@ -85,6 +87,9 @@
       </label>
       <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:#e8eaf0;">
         <input type="radio" name="defaultTab" value="text_grabber" style="accent-color:#4285F4;" /> Text Grabber
+      </label>
+      <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-size:13px; color:#e8eaf0;">
+        <input type="radio" name="defaultTab" value="multi_finder" style="accent-color:#4285F4;" /> Multi Finder
       </label>
       <div
         style="border-top:1px solid #1f2433; margin-top:8px; padding-top:10px; display:flex; flex-direction:column; gap:8px;">
@@ -217,6 +222,117 @@
       </div>
     </div>
 
+    <!-- Multi Finder Tab -->
+    <div id="multiFinderTab" class="tab-content" style="display:none">
+      <div class="mf-container">
+        <!-- Hero Launch Section -->
+        <div class="mf-hero">
+          <div class="mf-hero-text">
+            <h2>
+              <span style="font-size: 20px;">🔍</span> Multi Finder
+              <span
+                style="background: rgba(66, 133, 244, 0.2); color: #8ab4f8; font-size: 11px; padding: 2px 8px; border-radius: 12px; font-weight: 600;">PRO</span>
+            </h2>
+            <p>Simultaneously search and highlight up to 5 terms across any webpage in distinct vibrant colors. Press
+              the keyboard shortcut or click "Open on Webpage" to launch.</p>
+          </div>
+          <button id="mfLaunchBtn" class="mf-launch-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <span>Open on Webpage</span>
+          </button>
+        </div>
+
+        <!-- Settings & Features Grid -->
+        <div class="mf-grid">
+          <!-- Shortcut Configuration Card -->
+          <div class="mf-card">
+            <div class="mf-card-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#4285F4" stroke-width="2">
+                <rect x="2" y="4" width="20" height="16" rx="2" />
+                <path d="M6 8h.001M10 8h.001M14 8h.001M18 8h.001M8 12h.001M12 12h.001M16 12h.001M7 16h10" />
+              </svg>
+              <span>Keyboard Shortcut Settings</span>
+            </div>
+
+            <div style="font-size:12px; color:#9ca3af;">Current Activation Shortcut:</div>
+            <div class="mf-shortcut-display" id="mfShortcutDisplay">
+              <!-- Populated by JS -->
+            </div>
+            <div class="mf-shortcut-conflict" id="mfShortcutConflict" style="display:none;"></div>
+
+            <div class="mf-shortcut-recorder">
+              <div style="font-size:12px; color:#9ca3af;">Change Custom Shortcut:</div>
+              <div class="mf-recorder-box" id="mfRecorderBox">Click here to record a new key combination</div>
+            </div>
+
+            <div class="mf-btn-group">
+              <button class="mf-btn-secondary" id="mfResetBtn">Reset Default (Ctrl+Shift+F)</button>
+              <button class="mf-btn-danger" id="mfRemoveBtn">Remove Shortcut</button>
+            </div>
+            <div class="mf-chrome-shortcuts-link" id="mfChromeShortcutsLink">Configure Global Chrome Shortcut
+              (chrome://extensions/shortcuts) ↗</div>
+          </div>
+
+          <!-- Feature Guide Card -->
+          <div class="mf-card">
+            <div class="mf-card-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#34A853" stroke-width="2">
+                <path
+                  d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
+              <span>How to Use Multi Finder</span>
+            </div>
+
+            <div class="mf-features-list">
+              <div class="mf-feature-item">
+                <span style="font-size:16px;">⚡</span>
+                <div>
+                  <strong>Smart Selection:</strong> Highlight any text (up to 150 chars) on any website and press
+                  shortcut — it instantly opens and searches!
+                </div>
+              </div>
+              <div class="mf-feature-item">
+                <span style="font-size:16px;">🎨</span>
+                <div>
+                  <strong>5 Distinct Colors:</strong> Yellow, Teal, Sky Blue, Orange, and Pink. Customize colors via
+                  color pickers.
+                </div>
+              </div>
+              <div class="mf-feature-item">
+                <span style="font-size:16px;">📌</span>
+                <div>
+                  <strong>Draggable & Minimizable:</strong> Drag anywhere across the screen. Collapse into a mini pill
+                  if you need more space.
+                </div>
+              </div>
+              <div class="mf-feature-item">
+                <span style="font-size:16px;">⌨️</span>
+                <div>
+                  <strong>Quick Navigation:</strong> Press <code>Enter</code> to jump forward, <code>Shift+Enter</code>
+                  to jump backward, and <code>Esc</code> to exit.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Shortcut Removal Warning Modal -->
+        <div class="mf-modal-overlay" id="mfModalOverlay" style="display:none;">
+          <div class="mf-modal">
+            <div style="font-size:32px;">⚠️</div>
+            <h3>Shortcut Removed</h3>
+            <p>You have disabled the keyboard shortcut. To use Multi Finder, you will need to open it manually by
+              clicking <strong>"Open on Webpage"</strong> from this extension popup.</p>
+            <button class="mf-modal-btn" id="mfModalOkBtn">Got it</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 
   <script src="constants.js"></script>
@@ -224,6 +340,7 @@
   <script src="calculator/calculator.js"></script>
   <script src="text_grabber/tesseract.min.js"></script>
   <script src="text_grabber/text_grabber.js"></script>
+  <script src="multi_finder/multi_finder_tab.js"></script>
   <script src="popup.js"></script>
 </body>
 

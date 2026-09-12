@@ -19,7 +19,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         sendResponse({ success: false, error: 'No active tab found' });
         return;
       }
-      
+
       const url = activeTab.url || '';
       if (
         url.startsWith('chrome://') ||
@@ -61,7 +61,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
           chrome.storage.local.set({ ocrError: errorMsg });
           // Attempt to re-open popup to show error
           if (chrome.action && chrome.action.openPopup) {
-            chrome.action.openPopup().catch(() => {});
+            chrome.action.openPopup().catch(() => { });
           }
           return;
         }
@@ -77,14 +77,112 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         chrome.storage.local.set({ pendingOcrCapture: pendingData, ocrError: null }, () => {
           // Re-open extension popup automatically
           if (chrome.action && chrome.action.openPopup) {
-            chrome.action.openPopup().catch((err) => {
-              console.log('openPopup note:', err);
-            });
+            chrome.action.openPopup().catch((err) => { });
           }
         });
       });
     }, 120);
 
     return true;
+  }
+
+  // 3. Toggle Multi Finder from popup or other sources
+  if (message.action === 'TRIGGER_MULTI_FINDER') {
+    chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+      const activeTab = tabs && tabs[0] ? tabs[0] : null;
+      if (!activeTab || !activeTab.id) {
+        sendResponse({ success: false, error: 'No active tab found' });
+        return;
+      }
+
+      const url = activeTab.url || '';
+      if (
+        url.startsWith('chrome://') ||
+        url.startsWith('chrome-extension://') ||
+        url.startsWith('edge://') ||
+        url.startsWith('about:') ||
+        url.includes('chrome.google.com/webstore') ||
+        url.includes('chromewebstore.google.com')
+      ) {
+        sendResponse({
+          success: false,
+          error: 'Multi Finder cannot run on internal browser pages (chrome://). Please switch to a normal webpage (like google.com or wikipedia.org) and try again!'
+        });
+        return;
+      }
+
+      toggleMultiFinderInTab(activeTab.id, sendResponse);
+    });
+    return true;
+  }
+});
+
+// Helper to inject/send toggle message to active tab
+function toggleMultiFinderInTab(tabId, callback) {
+  // Directly message active tab for instantaneous 0ms response
+  chrome.tabs.sendMessage(tabId, { action: 'TOGGLE_MULTI_FINDER' }).then((res) => {
+    if (callback) callback(res || { success: true });
+  }).catch(() => {
+    // If content script is not yet injected on this tab, inject dynamically into frame 0 only
+    chrome.scripting.executeScript({
+      target: { tabId: tabId, allFrames: false },
+      files: ['popup/multi_finder/multi_finder_content.js']
+    }).then(() => {
+      setTimeout(() => {
+        chrome.tabs.sendMessage(tabId, { action: 'TOGGLE_MULTI_FINDER' })
+          .then((res2) => {
+            if (callback) callback(res2 || { success: true });
+          })
+          .catch((sendErr) => {
+            if (callback) callback({ success: false, error: sendErr ? sendErr.message : 'Could not message page' });
+          });
+      }, 50);
+    }).catch((err) => {
+      console.warn('Could not inject Multi Finder:', err);
+      if (callback) callback({ success: false, error: err.message });
+    });
+  });
+}
+
+function isDefaultShortcut(sc) {
+  if (!sc || !sc.key) return false;
+  return (sc.ctrlKey || sc.metaKey) && sc.shiftKey && !sc.altKey && sc.key.toUpperCase() === 'F';
+}
+
+// 4. Handle Keyboard Shortcut commands (Ctrl+Shift+F / Command+Shift+F)
+chrome.commands.onCommand.addListener((command, tab) => {
+  if (command === 'toggle-multi-finder') {
+    chrome.storage.local.get(['multiFinderShortcut'], (res) => {
+      if (res && Object.prototype.hasOwnProperty.call(res, 'multiFinderShortcut')) {
+        const sc = res.multiFinderShortcut;
+        if (sc === null || sc === false || (sc && !isDefaultShortcut(sc))) {
+          return;
+        }
+      }
+
+      const handleTab = (activeTab) => {
+        if (!activeTab || !activeTab.id) return;
+        const url = activeTab.url || '';
+        if (
+          url.startsWith('chrome://') ||
+          url.startsWith('chrome-extension://') ||
+          url.startsWith('edge://') ||
+          url.startsWith('about:') ||
+          url.includes('chrome.google.com/webstore') ||
+          url.includes('chromewebstore.google.com')
+        ) {
+          return;
+        }
+        toggleMultiFinderInTab(activeTab.id);
+      };
+
+      if (tab && tab.id) {
+        handleTab(tab);
+      } else {
+        chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+          handleTab(tabs && tabs[0] ? tabs[0] : null);
+        });
+      }
+    });
   }
 });
